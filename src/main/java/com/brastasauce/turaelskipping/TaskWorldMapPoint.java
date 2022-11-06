@@ -24,6 +24,7 @@
  */
 package com.brastasauce.turaelskipping;
 
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;
 
@@ -31,9 +32,9 @@ import java.awt.image.BufferedImage;
 
 public class TaskWorldMapPoint extends WorldMapPoint
 {
-    TaskWorldMapPoint(Task task)
+    TaskWorldMapPoint(WorldPoint worldPoint)
     {
-        super(task.getWorldPoint(), null);
+        super(worldPoint, null);
 
         BufferedImage taskWorldImage = ImageUtil.loadImageResource(TuraelSkippingPlugin.class, "/turael_chathead.png");
 
