@@ -48,7 +48,7 @@ public enum Task
     GOBLINS("Goblins", new WorldPoint(3145,3301,0), "Southeast of Draynor Manor", new String[]{"Draynor Manor teleport tab"}, "Directly south of the Sourhog Cave"),
     GHOSTS("Ghosts", new WorldPoint(1693,10063,0), "Zeah Catacombs", new String[]{"Achievement Diary Cape: Kourend","Xeric's Talisman: Xeric's Heart"}, ""),
     ICEFIENDS("Icefiends", new WorldPoint(3007,3475,0), "Ice Mountain", new String[]{"Lassar teleport tab"}, ""),
-    KALPHITES("Kalphites", new WorldPoint(3372,9528,0), "Outside Shantay Pass", new String[]{"Desert Amulet 4: Kalphite Cave"}, ""),
+    KALPHITE("Kalphite", new WorldPoint(3372,9528,0), "Outside Shantay Pass", new String[]{"Desert Amulet 4: Kalphite Cave"}, ""),
     LIZARDS("Lizards", new WorldPoint(3413,3035,0), "Al Kharid Desert (east of river)", new String[]{"Fairy Ring: DLQ"}, "Bring ice coolers"),
     MINOTAURS("Minotaurs", new WorldPoint(1875,5218,0), "First Floor Stronghold of Security", new String[]{"Skull Sceptre: Invoke"}, ""),
     MONKEYS("Monkeys", new WorldPoint(2713,2794,0), "Underneath Ape Atoll", new String[]{"Gnome Glider: Ookookolly Undri"}, "Run south and open trapdoor"),
