@@ -59,6 +59,8 @@ public class TuraelSkippingPlugin extends Plugin
 	private static final Pattern TURAEL_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill \\d+) (?<name>.+)(?:.)");
 	private static final Pattern TURAEL_CURRENT_MESSAGE = Pattern.compile(".*(?:You're still hunting) (?<name>.+)(?:, you have \\d+ to go.)");
 
+	private boolean worldPointSet = false;
+
 	@Getter
 	private Task task;
 
@@ -87,13 +89,15 @@ public class TuraelSkippingPlugin extends Plugin
 	{
 		task = null;
 		worldMapPointManager.removeIf(TaskWorldMapPoint.class::isInstance);
+		worldPointSet = false;
 	}
 
 	private void createWorldPoint()
 	{
-		if (task != null && config.displayMapIcon())
+		if (task != null && config.displayMapIcon() && !worldPointSet)
 		{
 			worldMapPointManager.add(new TaskWorldMapPoint(task));
+			worldPointSet = true;
 		}
 	}
 
@@ -158,9 +162,11 @@ public class TuraelSkippingPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		worldMapPointManager.removeIf(TaskWorldMapPoint.class::isInstance);
 		if (event.getGroup().equals("turaelskipping"))
 		{
+			worldMapPointManager.removeIf(TaskWorldMapPoint.class::isInstance);
+			worldPointSet = false;
+
 			createWorldPoint();
 		}
 	}
