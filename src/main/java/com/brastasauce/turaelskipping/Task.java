@@ -34,38 +34,38 @@ import java.util.Map;
 @Getter
 public enum Task
 {
-    BANSHEES("Banshees", new WorldPoint(3442,3542,0), "Morytania Slayer Tower", "- Slayer Ring: Morytania Slayer Tower", ""),
-    BATS("Bats", new WorldPoint(3351,3490,0), "West of Paterdomus Temple", "- Ring of the elements: Earth Altar\n- Digsite/Lumberyard teleport", ""),
-    BEARS("Bears", new WorldPoint(2700,3330,0), "Mine east of Ardougne", "- Fairy Ring: BLR\n- Quest Cape teleport", ""),
-    BIRDS("Birds", new WorldPoint(3178,3359,0), "Champions' Guild", "- Combat Bracelet: Champions' Guild\n- Chronicle teleport", ""),
-    CAVE_BUGS("Cave Bugs", new WorldPoint(2786,5318,0), "Dorgeshuun Dungeon", "- Fairy Ring: AJQ then north and west", "Bring a light source"),
-    CAVE_CRAWLERS("Cave Crawlers", new WorldPoint(2795,9997,0), "Relleka Slayer Dungeon", "- Slayer Ring: Relekka Slayer Caves", ""),
-    CAVE_SLIMES("Cave Slimes", new WorldPoint(2786,5318,0), "Dorgeshuun Dungeon", "- Fairy Ring: AJQ then north and west", "Bring a light source"),
-    COWS("Cows", new WorldPoint(3257,3273,0), "Lumbridge Cow Pen", "- Lumbridge teleport", ""),
-    CRAWLING_HANDS("Crawling Hands", new WorldPoint(3419,3571,0), "Morytania Slayer Tower", "- Slayer Ring: Morytania Slayer Tower", ""),
-    DOGS("Dogs", new WorldPoint(3347,2783,0), "East of Sophanem", "- Pharaoh's Sceptre: Jaleustrophos (Option 2)", ""),
-    DWARVES("Dwarves", new WorldPoint(2863,9878,0), "Under White Wolf Mountain", "- Construction Cape: Taverley\n- Redirected house tab", ""),
-    GOBLINS("Goblins", new WorldPoint(3145,3301,0), "Southeast of Draynor Manor", "- Draynor Manor teleport tab", "Directly south of the Sourhog Cave"),
-    GHOSTS("Ghosts", new WorldPoint(1693,10063,0), "Zeah Catacombs", "- Achievement Diary Cape: Kourend\n- Xeric's Talisman: Xeric's Heart", ""),
-    ICEFIENDS("Icefiends", new WorldPoint(3007,3475,0), "Ice Mountain", "- Lassar teleport tab", ""),
-    KALPHITES("Kalphites", new WorldPoint(3372,9528,0), "Outside Shantay Pass", "- Desert Amulet 4: Kalphite Cave", ""),
-    LIZARDS("Lizards", new WorldPoint(3413,3035,0), "Al Kharid Desert (east of river)", "- Fairy Ring: DLQ", "Bring ice coolers"),
-    MINOTAURS("Minotaurs", new WorldPoint(1875,5218,0), "First Floor Stronghold of Security", "- Skull Sceptre: Invoke", ""),
-    MONKEYS("Monkeys", new WorldPoint(2713,2794,0), "Underneath Ape Atoll", "- Gnome Glider: Ookookolly Undri", "Run south and open trapdoor"),
-    RATS("Rats", new WorldPoint(3237,9866,0), "Varrock Sewers, northeast entrance", "- Varrock teleport", ""),
-    SCORPIONS("Scorpions", new WorldPoint(3299,3290,0), "Al Kharid Mine", "- Ring of the elements: Fire Altar\n- Ring of dueling: PvP Arena", ""),
-    SKELETONS("Skeletons", new WorldPoint(3352,3417,0), "Digsite", "- Master Scroll Book: Digsite\n- Digsite Pendant", "Bring a rope"),
-    SOURHOGS("Sourhogs", new WorldPoint(3173,9688,0), "Sourhog Cave east of Draynor Manor", "- Draynor Manor teleport tab", ""),
-    SPIDERS("Spiders", new WorldPoint(3168,3244,0), "Outside H.A.M. Hideout", "- Achievement Diary Cape: Twiggy O'Korn\n- Amulet of Glory: Draynor Village", ""),
-    WOLVES("Wolves", new WorldPoint(2847,3498,0), "White Wolf Mountain", "- Gnome Glider: Sindarpos", ""),
-    ZOMBIES("Zombies", new WorldPoint(3630,3530,0), "West of Ecto Altar", "- Ectophial: Empty", "Both Cows and Chickens count towards Zombie task");
+    BANSHEES("Banshees", new WorldPoint(3442,3542,0), "Morytania Slayer Tower", new String[]{"Slayer Ring: Morytania Slayer Tower"}, ""),
+    BATS("Bats", new WorldPoint(3351,3490,0), "West of Paterdomus Temple", new String[]{"Ring of the elements: Earth Altar","Digsite/Lumberyard teleport"}, ""),
+    BEARS("Bears", new WorldPoint(2700,3330,0), "Mine east of Ardougne", new String[]{"Fairy Ring: BLR","Quest Cape teleport"}, ""),
+    BIRDS("Birds", new WorldPoint(3178,3359,0), "Champions' Guild", new String[]{"Combat Bracelet: Champions' Guild","Chronicle teleport"}, ""),
+    CAVE_BUGS("Cave Bugs", new WorldPoint(2786,5318,0), "Dorgeshuun Dungeon", new String[]{"Fairy Ring: AJQ then north and west"}, "Bring a light source"),
+    CAVE_CRAWLERS("Cave Crawlers", new WorldPoint(2795,9997,0), "Relleka Slayer Dungeon", new String[]{"Slayer Ring: Relekka Slayer Caves"}, ""),
+    CAVE_SLIMES("Cave Slimes", new WorldPoint(2786,5318,0), "Dorgeshuun Dungeon", new String[]{"Fairy Ring: AJQ then north and west"}, "Bring a light source"),
+    COWS("Cows", new WorldPoint(3257,3273,0), "Lumbridge Cow Pen", new String[]{"Lumbridge teleport"}, ""),
+    CRAWLING_HANDS("Crawling Hands", new WorldPoint(3419,3571,0), "Morytania Slayer Tower", new String[]{"Slayer Ring: Morytania Slayer Tower"}, ""),
+    DOGS("Dogs", new WorldPoint(3347,2783,0), "East of Sophanem", new String[]{"Pharaoh's Sceptre: Jaleustrophos (Option 2)"}, ""),
+    DWARVES("Dwarves", new WorldPoint(2863,9878,0), "Under White Wolf Mountain", new String[]{"Construction Cape: Taverley","Redirected house tab"}, ""),
+    GOBLINS("Goblins", new WorldPoint(3145,3301,0), "Southeast of Draynor Manor", new String[]{"Draynor Manor teleport tab"}, "Directly south of the Sourhog Cave"),
+    GHOSTS("Ghosts", new WorldPoint(1693,10063,0), "Zeah Catacombs", new String[]{"Achievement Diary Cape: Kourend","Xeric's Talisman: Xeric's Heart"}, ""),
+    ICEFIENDS("Icefiends", new WorldPoint(3007,3475,0), "Ice Mountain", new String[]{"Lassar teleport tab"}, ""),
+    KALPHITES("Kalphites", new WorldPoint(3372,9528,0), "Outside Shantay Pass", new String[]{"Desert Amulet 4: Kalphite Cave"}, ""),
+    LIZARDS("Lizards", new WorldPoint(3413,3035,0), "Al Kharid Desert (east of river)", new String[]{"Fairy Ring: DLQ"}, "Bring ice coolers"),
+    MINOTAURS("Minotaurs", new WorldPoint(1875,5218,0), "First Floor Stronghold of Security", new String[]{"Skull Sceptre: Invoke"}, ""),
+    MONKEYS("Monkeys", new WorldPoint(2713,2794,0), "Underneath Ape Atoll", new String[]{"Gnome Glider: Ookookolly Undri"}, "Run south and open trapdoor"),
+    RATS("Rats", new WorldPoint(3237,9866,0), "Varrock Sewers, northeast entrance", new String[]{"Varrock teleport"}, ""),
+    SCORPIONS("Scorpions", new WorldPoint(3299,3290,0), "Al Kharid Mine", new String[]{"Ring of the elements: Fire Altar","Ring of dueling: PvP Arena"}, ""),
+    SKELETONS("Skeletons", new WorldPoint(3352,3417,0), "Digsite", new String[]{"Master Scroll Book: Digsite","Digsite Pendant"}, "Bring a rope"),
+    SOURHOGS("Sourhogs", new WorldPoint(3173,9688,0), "Sourhog Cave east of Draynor Manor", new String[]{"Draynor Manor teleport tab"}, ""),
+    SPIDERS("Spiders", new WorldPoint(3168,3244,0), "Outside H.A.M. Hideout", new String[]{"Achievement Diary Cape: Twiggy O'Korn","Amulet of Glory: Draynor Village"}, ""),
+    WOLVES("Wolves", new WorldPoint(2847,3498,0), "White Wolf Mountain", new String[]{"Gnome Glider: Sindarpos"}, ""),
+    ZOMBIES("Zombies", new WorldPoint(3630,3530,0), "West of Ecto Altar", new String[]{"Ectophial: Empty"}, "Both Cows and Chickens count towards Zombie task");
 
     private static final Map<String, Task> tasks;
 
     private final String name;
     private final WorldPoint worldPoint;
     private final String location;
-    private final String teleport;
+    private final String[] teleports;
     private final String info;
 
     static
@@ -80,12 +80,12 @@ public enum Task
         tasks = builder.build();
     }
 
-    Task(String name, WorldPoint worldPoint, String location, String teleport, String info)
+    Task(String name, WorldPoint worldPoint, String location, String[] teleports, String info)
     {
         this.name = name;
         this.worldPoint = worldPoint;
         this.location = location;
-        this.teleport = teleport;
+        this.teleports = teleports;
         this.info = info;
     }
 

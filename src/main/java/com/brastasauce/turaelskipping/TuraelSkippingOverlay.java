@@ -56,7 +56,11 @@ public class TuraelSkippingOverlay extends OverlayPanel
         }
 
         panelComponent.getChildren().add(LineComponent.builder().left(plugin.getTask().getLocation()).build());
-        panelComponent.getChildren().add(LineComponent.builder().left(plugin.getTask().getTeleport()).leftColor(Color.LIGHT_GRAY).build());
+
+        for (String teleport : plugin.getTask().getTeleports())
+        {
+            panelComponent.getChildren().add(LineComponent.builder().left("- " + teleport).leftColor(Color.LIGHT_GRAY).build());
+        }
 
         if (!plugin.getTask().getInfo().isEmpty())
         {
