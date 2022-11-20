@@ -39,7 +39,7 @@ public enum Task
     BEARS("Bears", new WorldPoint[]{new WorldPoint(2700,3330,0)}, "Mine east of Ardougne", new String[]{"Fairy Ring: BLR","Quest Cape teleport"}, ""),
     BIRDS("Birds", new WorldPoint[]{new WorldPoint(3178,3359,0)}, "Champions' Guild", new String[]{"Combat Bracelet: Champions' Guild","Chronicle teleport"}, ""),
     CAVE_BUGS("Cave Bugs", new WorldPoint[]{new WorldPoint(3206,3217,0),new WorldPoint(2786,5318,0)}, "Dorgeshuun Dungeon", new String[]{"Fairy Ring: AJQ then north and west"}, "Bring a light source"),
-    CAVE_CRAWLERS("Cave Crawlers", new WorldPoint[]{new WorldPoint(2789,3617,0),new WorldPoint(2795,9997,0)}, "Relleka Slayer Dungeon", new String[]{"Slayer Ring: Relekka Slayer Caves"}, ""),
+    CAVE_CRAWLERS("Cave Crawlers", new WorldPoint[]{new WorldPoint(2789,3617,0),new WorldPoint(2795,9997,0)}, "Fremennik Slayer Dungeon", new String[]{"Slayer Ring: Relekka Slayer Caves","Fairy Ring: AJR"}, ""),
     CAVE_SLIMES("Cave Slimes", new WorldPoint[]{new WorldPoint(3206,3217,0),new WorldPoint(2786,5318,0)}, "Dorgeshuun Dungeon", new String[]{"Fairy Ring: AJQ then north and west"}, "Bring a light source"),
     COWS("Cows", new WorldPoint[]{new WorldPoint(3257,3273,0)}, "Lumbridge Cow Pen", new String[]{"Lumbridge teleport"}, ""),
     CRAWLING_HANDS("Crawling Hands", new WorldPoint[]{new WorldPoint(3419,3571,0)}, "Morytania Slayer Tower", new String[]{"Slayer Ring: Morytania Slayer Tower"}, ""),
