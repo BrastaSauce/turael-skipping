@@ -55,6 +55,7 @@ import java.util.regex.Pattern;
 public class TuraelSkippingPlugin extends Plugin
 {
 	private static final String TURAEL = "Turael";
+	private static final String SPRIA = "Spria";
 
 	// NPC messages
 	private static final Pattern TURAEL_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill \\d+) (?<name>.+)(?:.)");
@@ -111,8 +112,7 @@ public class TuraelSkippingPlugin extends Plugin
 		// Getting tasks
 		Widget npcName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME);
 		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-
-		if (npcDialog != null && npcName.getText().equals(TURAEL))
+		if (npcDialog != null && npcName != null && (npcName.getText().equals(TURAEL) || npcName.getText().equals(SPRIA)))
 		{
 			String npcText = Text.sanitizeMultilineText(npcDialog.getText());
 			final Matcher mAssign = TURAEL_ASSIGN_MESSAGE.matcher(npcText);
