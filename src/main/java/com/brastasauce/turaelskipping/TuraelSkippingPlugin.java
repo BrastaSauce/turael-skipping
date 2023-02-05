@@ -58,8 +58,8 @@ public class TuraelSkippingPlugin extends Plugin
 	private static final String SPRIA = "Spria";
 
 	// NPC messages
-	private static final Pattern TURAEL_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill \\d+) (?<name>.+)(?:.)");
-	private static final Pattern TURAEL_CURRENT_MESSAGE = Pattern.compile(".*(?:You're still hunting) (?<name>.+)(?:, you have \\d+ to go.)");
+	private static final Pattern SLAYER_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill \\d+) (?<name>.+)(?:.)");
+	private static final Pattern SLAYER_CURRENT_MESSAGE = Pattern.compile(".*(?:You're still hunting) (?<name>.+)(?:[,;] you have \\d+ to go.)");
 
 	private boolean worldPointSet = false;
 
@@ -115,8 +115,8 @@ public class TuraelSkippingPlugin extends Plugin
 		if (npcDialog != null && npcName != null && (npcName.getText().equals(TURAEL) || npcName.getText().equals(SPRIA)))
 		{
 			String npcText = Text.sanitizeMultilineText(npcDialog.getText());
-			final Matcher mAssign = TURAEL_ASSIGN_MESSAGE.matcher(npcText);
-			final Matcher mCurrent = TURAEL_CURRENT_MESSAGE.matcher(npcText);
+			final Matcher mAssign = SLAYER_ASSIGN_MESSAGE.matcher(npcText);
+			final Matcher mCurrent = SLAYER_CURRENT_MESSAGE.matcher(npcText);
 
 			if (mAssign.find())
 			{
