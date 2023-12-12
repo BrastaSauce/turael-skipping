@@ -51,7 +51,7 @@ public enum Task
     KALPHITE("Kalphite", new WorldPoint[]{new WorldPoint(3326,3122,0),new WorldPoint(3372,9528,0)}, "Outside Shantay Pass", new String[]{"Desert Amulet 4: Kalphite Cave"}, ""),
     LIZARDS("Lizards", new WorldPoint[]{new WorldPoint(3413,3035,0)}, "Al Kharid Desert (east of river)", new String[]{"Fairy Ring: DLQ"}, "Bring ice coolers"),
     MINOTAURS("Minotaurs", new WorldPoint[]{new WorldPoint(3084,3417,0),new WorldPoint(1875,5218,0)}, "First Floor Stronghold of Security", new String[]{"Skull Sceptre: Invoke"}, ""),
-    MONKEYS("Monkeys", new WorldPoint[]{new WorldPoint(2713,2794,0)}, "Underneath Ape Atoll", new String[]{"Gnome Glider: Ookookolly Undri"}, "Run south and open trapdoor"),
+    MONKEYS("Monkeys", new WorldPoint[]{new WorldPoint(2713,2794,0)}, "Underneath Ape Atoll", new String[]{"Gnome Glider: Ookookolly Undri"}, "Run south and open trapdoor, Bring lightsource"),
     RATS("Rats", new WorldPoint[]{new WorldPoint(3240,3458,0),new WorldPoint(3237,9866,0)}, "Varrock Sewers, northeast entrance", new String[]{"Varrock teleport"}, ""),
     SCORPIONS("Scorpions", new WorldPoint[]{new WorldPoint(3299,3301,0)}, "Al Kharid Mine", new String[]{"Ring of the elements: Fire Altar","Ring of dueling: PvP Arena"}, ""),
     SKELETONS("Skeletons", new WorldPoint[]{new WorldPoint(3352,3417,0)}, "Digsite", new String[]{"Master Scroll Book: Digsite","Digsite Pendant"}, "Bring a rope"),
