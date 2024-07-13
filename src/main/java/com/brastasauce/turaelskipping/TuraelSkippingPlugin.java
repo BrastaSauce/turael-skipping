@@ -56,6 +56,7 @@ public class TuraelSkippingPlugin extends Plugin
 {
 	private static final String TURAEL = "Turael";
 	private static final String SPRIA = "Spria";
+	private static final String AYA = "Aya";
 
 	// NPC messages
 	private static final Pattern SLAYER_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill \\d+) (?<name>.+)(?:.)");
@@ -112,7 +113,7 @@ public class TuraelSkippingPlugin extends Plugin
 		// Getting tasks
 		Widget npcName = client.getWidget(ComponentID.DIALOG_NPC_NAME);
 		Widget npcDialog = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
-		if (npcDialog != null && npcName != null && (npcName.getText().equals(TURAEL) || npcName.getText().equals(SPRIA)))
+		if (npcDialog != null && npcName != null && (npcName.getText().equals(TURAEL) || npcName.getText().equals(SPRIA) || npcName.getText().equals(AYA)))
 		{
 			String npcText = Text.sanitizeMultilineText(npcDialog.getText());
 			final Matcher mAssign = SLAYER_ASSIGN_MESSAGE.matcher(npcText);
