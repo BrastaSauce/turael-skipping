@@ -53,7 +53,7 @@ public enum Task
     MINOTAURS("Minotaurs", new WorldPoint[]{new WorldPoint(3084,3417,0),new WorldPoint(1875,5218,0)}, "First Floor Stronghold of Security", new String[]{"Skull Sceptre: Invoke"}, ""),
     MONKEYS("Monkeys", new WorldPoint[]{new WorldPoint(2713,2794,0)}, "Underneath Ape Atoll", new String[]{"Gnome Glider: Ookookolly Undri"}, "Run south and open trapdoor, Bring lightsource"),
     RATS("Rats", new WorldPoint[]{new WorldPoint(3240,3458,0),new WorldPoint(3237,9866,0)}, "Varrock Sewers, northeast entrance", new String[]{"Varrock teleport"}, ""),
-    SCORPIONS("Scorpions", new WorldPoint[]{new WorldPoint(3299,3301,0)}, "Al Kharid Mine", new String[]{"Ring of the elements: Fire Altar","Ring of dueling: PvP Arena"}, ""),
+    SCORPIONS("Scorpions", new WorldPoint[]{new WorldPoint(3299,3301,0)}, "Al Kharid Mine", new String[]{"Ring of the elements: Fire Altar","Ring of dueling: Emir's Arena"}, ""),
     SKELETONS("Skeletons", new WorldPoint[]{new WorldPoint(3352,3417,0)}, "Digsite", new String[]{"Master Scroll Book: Digsite","Digsite Pendant"}, "Bring a rope"),
     SOURHOGS("Sourhogs", new WorldPoint[]{new WorldPoint(3143,3347,0),new WorldPoint(3173,9688,0)}, "Sourhog Cave east of Draynor Manor", new String[]{"Draynor Manor teleport tab"}, ""),
     SPIDERS("Spiders", new WorldPoint[]{new WorldPoint(3168,3244,0)}, "Outside H.A.M. Hideout", new String[]{"Achievement Diary Cape: Twiggy O'Korn","Amulet of Glory: Draynor Village"}, ""),
