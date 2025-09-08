@@ -27,29 +27,154 @@ package com.brastasauce.turaelskipping;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("turaelskipping")
-public interface TuraelSkippingConfig extends Config
-{
-	@ConfigItem(
-			keyName = "displayMapIcon",
-			name = "Display Map Icon",
-			description = "Displays an icon on the world map where the task is located",
-			position = 0
-	)
-	default boolean displayMapIcon()
-	{
-		return true;
-	}
+import java.awt.Color;
 
-	@ConfigItem(
-		keyName = "displayInfo",
-		name = "Display Info",
-		description = "Displays an infobox containing task information",
-		position = 1
-	)
-	default boolean displayInfo()
-	{
-		return true;
-	}
+@ConfigGroup(TuraelSkippingConfig.CONFIG_GROUP_NAME)
+public interface TuraelSkippingConfig extends Config {
+    String CONFIG_GROUP_NAME = "Turael skipping";
+
+    // General settings
+    @ConfigSection(
+            position = 0,
+            name = "General settings",
+            description = "General settings"
+    )
+    String generalSettings = "generalSettings";
+
+    @ConfigItem(
+            position = 0,
+            keyName = "enableInformationBox",
+            name = "Enable information box",
+            description = "Whether to show an information box with information about the current task.",
+            section = generalSettings
+    )
+    default boolean enableInformationBox() {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 1,
+            keyName = "automaticallyHideInformationBox",
+            name = "Automatically hide information box",
+            description = "Whether to automatically hide the information box when you are at your current task.",
+            section = generalSettings
+    )
+    default boolean automaticallyHideInformationBox() {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 2,
+            keyName = "enableWorldMapIcon",
+            name = "Enable world map icon",
+            description = "Displays an icon on the world map where the current task is located.",
+            section = generalSettings
+    )
+    default boolean enableWorldMapIcon() {
+        return true;
+    }
+
+    // Highlight settings
+    @ConfigSection(
+            position = 1,
+            name = "NPC Highlight settings",
+            description = "Customize NPC highlight settings"
+    )
+    String npcHighlightSettings = "npcHighlightSettings";
+
+    @ConfigItem(
+            position = 0,
+            keyName = "enableNpcHighlight",
+            name = "Enable NPC highlight",
+            description = "Whether you want to highlight the NPC's from your current slayer task.",
+            section = npcHighlightSettings
+    )
+    default boolean enableNpcHighlight() {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 1,
+            keyName = "npcHighlightMode",
+            name = "NPC highlight mode",
+            description = "Select how to highlight the NPC's.",
+            section = npcHighlightSettings
+    )
+    default NpcHighlightMode getNpcHighlightMode() {
+        return NpcHighlightMode.Tile;
+    }
+
+    @ConfigItem(
+            position = 2,
+            keyName = "npcColour",
+            name = "NPC highlight colour",
+            description = "Select the colour of the highlighted NPC's.",
+            section = npcHighlightSettings
+    )
+    default Color getNpcColour() {
+        return Color.decode("#DDFF00");
+    }
+
+    // Slayer area outline
+    @ConfigSection(
+            position = 2,
+            name = "Slayer area outline",
+            description = "Slayer area outline"
+    )
+    String slayerAreaOutline = "slayerAreaOutline";
+
+    @ConfigItem(
+            position = 0,
+            keyName = "enableSlayerAreaOutline",
+            name = "Enable slayer area outline",
+            description = "Draws an outline around the slayer locations.",
+            section = slayerAreaOutline
+    )
+    default boolean enableSlayerAreaOutline() {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 1,
+            keyName = "slayerAreaOutlineColour",
+            name = "Slayer area outline colour",
+            description = "Select the colour for the slayer area outline",
+            section = slayerAreaOutline
+    )
+    default Color getSlayerAreaOutlineColour() {
+        return Color.decode("#DDFF00");
+    }
+
+    // Debug settings
+    @ConfigSection(
+            position = 3,
+            name = "Debugging",
+            closedByDefault = true,
+            description = "Various debug settings"
+    )
+    String debugSettings = "debugSettings";
+
+    @ConfigItem(
+            position = 0,
+            keyName = "debugTask",
+            name = "Select a task",
+            description = "Select a task to set as the current active task.",
+            section = debugSettings
+    )
+    default DebugSlayerTask getDebugTask() {
+        return DebugSlayerTask.None;
+    }
+
+    @ConfigItem(
+            position = 1,
+            keyName = "enableWorldPointSelector",
+            name = "Enable WorldPoint selector",
+            description = "Enables WorldPoint selector in the right click menu.",
+            section = debugSettings
+    )
+    default boolean enableWorldPointSelector() {
+        return false;
+    }
 }

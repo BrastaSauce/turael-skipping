@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, BrastaSauce
+ * Copyright (c) 2025, wesley-221
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,23 +24,30 @@
  */
 package com.brastasauce.turaelskipping;
 
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
-import net.runelite.client.util.ImageUtil;
-
-import java.awt.image.BufferedImage;
-
-public class TaskWorldMapPoint extends WorldMapPoint
-{
-    TaskWorldMapPoint(WorldPoint worldPoint)
-    {
-        super(worldPoint, null);
-
-        BufferedImage taskWorldImage = ImageUtil.loadImageResource(TuraelSkippingPlugin.class, "/turael_chathead.png");
-
-        this.setSnapToEdge(true);
-        this.setJumpOnClick(true);
-        this.setName("Turael Task");
-        this.setImage(taskWorldImage);
-    }
+public enum DebugSlayerTask {
+    None,
+    Banshees,
+    Bats,
+    Bears,
+    Birds,
+    Cave_Bugs,
+    Cave_Crawlers,
+    Cave_Slimes,
+    Cows,
+    Crawling_Hands,
+    Dogs,
+    Dwarves,
+    Ghosts,
+    Goblins,
+    Icefiends,
+    Kalphite,
+    Lizards,
+    Minotaurs,
+    Monkeys,
+    Rats,
+    Scorpions,
+    Skeletons,
+    Spiders,
+    Wolves,
+    Zombies
 }

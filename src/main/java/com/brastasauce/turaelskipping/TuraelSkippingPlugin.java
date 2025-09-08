@@ -24,161 +24,404 @@
  */
 package com.brastasauce.turaelskipping;
 
-import com.google.inject.Provides;
 import javax.inject.Inject;
+
+import com.brastasauce.turaelskipping.models.NpcLocation;
+import com.brastasauce.turaelskipping.models.SlayerTask;
+import com.brastasauce.turaelskipping.utils.AreaOutlineOverlay;
+import com.brastasauce.turaelskipping.utils.SlayerTaskOverlay;
+import com.brastasauce.turaelskipping.utils.SlayerTaskWorldMapPoint;
+import com.brastasauce.turaelskipping.utils.WorldAreaUtils;
+import com.google.inject.Provides;
+
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.Tile;
+import net.runelite.api.WorldView;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.Text;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Turael Skipping"
+        name = "Turael Skipping",
+        description = "Helper plugin for Turael/Aya slayer",
+        tags = {"slayer", "highlight", "overlay", "task", "turael", "aya"}
 )
-public class TuraelSkippingPlugin extends Plugin
-{
-	private static final String TURAEL = "Turael";
-	private static final String SPRIA = "Spria";
-	private static final String AYA = "Aya";
+public class TuraelSkippingPlugin extends Plugin {
+    private static final String TURAEL = "Turael";
+    private static final String AYA = "Aya";
 
-	// NPC messages
-	private static final Pattern SLAYER_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill \\d+) (?<name>.+)(?:.)");
-	private static final Pattern SLAYER_CURRENT_MESSAGE = Pattern.compile(".*(?:You're still hunting) (?<name>.+)(?:[,;] you have \\d+ to go.)");
+    private static final Pattern SLAYER_ASSIGN_MESSAGE = Pattern.compile("Your new task is to kill \\d+ (?<name>.+)\\.");
+    private static final Pattern SLAYER_CURRENT_MESSAGE = Pattern.compile("You're still hunting (?<name>.+)[,;] you have \\d+ to go\\.");
+    private static final Pattern SLAYER_CURRENT_CHAT_MESSAGE = Pattern.compile("You're assigned to kill (?<name>.+)[,;] only \\d+ more to go\\.");
 
-	private boolean worldPointSet = false;
+    private final Set<NPC> targets = new HashSet<>();
 
-	@Getter
-	private Task task;
+    private final String DEBUG_MENU_WORLD_POINT_ONE = "Set WorldPoint1 (Turael Skipping)";
+    private final String DEBUG_MENU_WORLD_POINT_TWO = "Set WorldPoint2 (Turael Skipping)";
+    private final String DEBUG_MENU_RESET_WORLD_POINTS = "Reset WorldPoints (Turael Skipping)";
+    private final String DEBUG_MENU_COPY_TO_CLIPBOARD = "Copy WorldPoints to clipboard (Turael Skipping)";
 
-	@Inject
-	private Client client;
+    private WorldPoint debugWorldPointOne;
+    private WorldPoint debugWorldPointTwo;
 
-	@Inject
-	private OverlayManager overlayManager;
+    @Inject
+    private Client client;
 
-	@Inject
-	private WorldMapPointManager worldMapPointManager;
+    @Inject
+    private TuraelSkippingConfig config;
 
-	@Inject
-	private TuraelSkippingOverlay overlay;
+    @Inject
+    private OverlayManager overlayManager;
 
-	@Inject
-	private TuraelSkippingConfig config;
+    @Inject
+    private NpcOverlayService npcOverlayService;
 
-	private void setTask(String taskName)
-	{
-		task = Task.getTask(taskName);
-		createWorldPoint();
-	}
+    @Inject
+    private WorldMapPointManager worldMapPointManager;
 
-	private void completeTask()
-	{
-		task = null;
-		worldMapPointManager.removeIf(TaskWorldMapPoint.class::isInstance);
-		worldPointSet = false;
-	}
+    @Inject
+    private AreaOutlineOverlay areaOutlineOverlay;
 
-	private void createWorldPoint()
-	{
-		if (task != null && config.displayMapIcon() && !worldPointSet)
-		{
-			for (WorldPoint worldPoint : task.getWorldPoints())
-			{
-				worldMapPointManager.add(new TaskWorldMapPoint(worldPoint));
-			}
-			worldPointSet = true;
-		}
-	}
+    @Inject
+    private AreaOutlineOverlay debugAreaOutlineOverlay;
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		// Getting tasks
-		Widget npcName = client.getWidget(ComponentID.DIALOG_NPC_NAME);
-		Widget npcDialog = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
-		if (npcDialog != null && npcName != null && (npcName.getText().equals(TURAEL) || npcName.getText().equals(SPRIA) || npcName.getText().equals(AYA)))
-		{
-			String npcText = Text.sanitizeMultilineText(npcDialog.getText());
-			final Matcher mAssign = SLAYER_ASSIGN_MESSAGE.matcher(npcText);
-			final Matcher mCurrent = SLAYER_CURRENT_MESSAGE.matcher(npcText);
+    @Inject
+    private SlayerTaskOverlay slayerTaskOverlay;
 
-			if (mAssign.find())
-			{
-				String name = mAssign.group("name");
-				setTask(name);
-			}
+    @Getter
+    private SlayerTask currentSlayerTask;
 
-			if (mCurrent.find())
-			{
-				String name = mCurrent.group("name");
-				setTask(name);
-			}
-		}
-	}
+    @Override
+    protected void startUp() {
+        overlayManager.add(slayerTaskOverlay);
+        overlayManager.add(debugAreaOutlineOverlay);
 
-	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
-		// Completing tasks
-		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
-		{
-			return;
-		}
+        debugAreaOutlineOverlay.setDebug(true);
+    }
 
-		String chatMessage = Text.removeTags(event.getMessage());
+    @Override
+    protected void shutDown() {
+        overlayManager.remove(slayerTaskOverlay);
+        overlayManager.remove(debugAreaOutlineOverlay);
+        npcOverlayService.unregisterHighlighter(npcHighlighter);
+        worldMapPointManager.removeIf(SlayerTaskWorldMapPoint.class::isInstance);
 
-		if (chatMessage.startsWith("You've completed") && (chatMessage.contains("Slayer master") || chatMessage.contains("Slayer Master")))
-		{
-			completeTask();
-		}
-	}
+        completeTask();
+    }
 
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(overlay);
-	}
+    @Subscribe
+    public void onGameTick(GameTick gameTick) {
+        Widget chatBoxNpcName = client.getWidget(InterfaceID.ChatLeft.NAME);
+        Widget chatBoxNpcText = client.getWidget(InterfaceID.ChatLeft.TEXT);
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
-		task = null;
-		worldMapPointManager.removeIf(TaskWorldMapPoint.class::isInstance);
-	}
+        // Check if current widget is either Turael or Aya
+        if (chatBoxNpcName != null && chatBoxNpcText != null && (chatBoxNpcName.getText().equals(TURAEL) || chatBoxNpcName.getText().equals(AYA))) {
+            String npcText = Text.sanitizeMultilineText(chatBoxNpcText.getText());
+            String taskName = getTaskName(npcText);
 
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("turaelskipping"))
-		{
-			worldMapPointManager.removeIf(TaskWorldMapPoint.class::isInstance);
-			worldPointSet = false;
+            if (taskName != null) {
+                startTask(taskName);
+            }
+        }
+    }
 
-			createWorldPoint();
-		}
-	}
+    @Subscribe
+    public void onChatMessage(ChatMessage event) {
+        if (event.getType() != ChatMessageType.GAMEMESSAGE) {
+            return;
+        }
 
-	@Provides
-	TuraelSkippingConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(TuraelSkippingConfig.class);
-	}
+        String chatMessage = Text.removeTags(event.getMessage());
+
+        if (currentSlayerTask == null) {
+            // Check if player used "Check" option on slayer helm
+            Matcher matcher = SLAYER_CURRENT_CHAT_MESSAGE.matcher(chatMessage);
+
+            if (matcher.find()) {
+                String taskName = matcher.group("name");
+
+                if (taskName != null) {
+                    startTask(taskName);
+                }
+            }
+        } else {
+            if (chatMessage.startsWith("You've completed") && chatMessage.toLowerCase().contains("slayer master")) {
+                completeTask();
+            }
+        }
+    }
+
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event) {
+        // Ignore changes from other plugins
+        if (!event.getGroup().equals(TuraelSkippingConfig.CONFIG_GROUP_NAME)) {
+            return;
+        }
+
+        // Set a dummy task
+        if (event.getKey().equals("debugTask")) {
+            if (event.getNewValue() == null) {
+                return;
+            }
+
+            // Always clear task to reset area outline/tagged NPC's
+            this.completeTask();
+
+            if (!event.getNewValue().equals("None")) {
+                this.startTask(event.getNewValue().toLowerCase().replace("_", " "));
+            }
+        }
+
+        // Re-select the slayer task, so it re-draws the outline if enabled or removes the outline when disabled
+        if (event.getKey().equals("enableSlayerAreaOutline")) {
+            if (this.currentSlayerTask != null) {
+                this.startTask(currentSlayerTask.getName());
+            }
+        }
+
+        // Set the debug WorldPoint values to null to remove the outline
+        if (event.getKey().equals("enableWorldPointSelector")) {
+            if (event.getNewValue() != null && event.getNewValue().equals("false")) {
+                debugAreaOutlineOverlay.setAreas(null);
+            }
+        }
+
+        // Rebuild the NPC highlighter with the updated settings
+        npcOverlayService.rebuild();
+    }
+
+    @Subscribe
+    public void onNpcSpawned(NpcSpawned npcSpawned) {
+        NPC npc = npcSpawned.getNpc();
+
+        // Add the NPC to the targets for NPC highlighting
+        if (currentSlayerTask != null) {
+            for (int targetNpcId : currentSlayerTask.getNpcIds()) {
+                if (npc.getId() == targetNpcId) {
+                    targets.add(npc);
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    public void onNpcDespawned(NpcDespawned npcDespawned) {
+        // Remove the NPC from the targets
+        NPC npc = npcDespawned.getNpc();
+        targets.remove(npc);
+    }
+
+    @Subscribe
+    public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded) {
+        if (!config.enableWorldPointSelector()) {
+            return;
+        }
+
+        // Only add the menu entry when you can walk, so it doesn't get added when you are right-clicking in the bank
+        if (menuEntryAdded.getOption().equals("Walk here")) {
+            // Add options in reverse, so it shows up correctly in the right click menu
+            client.getMenu()
+                    .createMenuEntry(-1)
+                    .setOption(DEBUG_MENU_RESET_WORLD_POINTS)
+                    .setTarget(menuEntryAdded.getTarget())
+                    .setType(MenuAction.RUNELITE)
+                    .onClick(menuEntry -> {
+                        debugWorldPointOne = null;
+                        debugWorldPointTwo = null;
+
+                        debugAreaOutlineOverlay.setAreas(null);
+                    });
+
+            client.getMenu()
+                    .createMenuEntry(-1)
+                    .setOption(DEBUG_MENU_COPY_TO_CLIPBOARD)
+                    .setTarget(menuEntryAdded.getTarget())
+                    .setType(MenuAction.RUNELITE)
+                    .onClick(menuEntry -> {
+                        if (debugWorldPointOne != null && debugWorldPointTwo != null) {
+                            String copyString = "new WorldPoint(" + debugWorldPointOne.getX() + ", " + debugWorldPointOne.getY() + ", " + debugWorldPointOne.getPlane() + "), " +
+                                    "new WorldPoint(" + debugWorldPointTwo.getX() + ", " + debugWorldPointTwo.getY() + ", " + debugWorldPointTwo.getPlane() + ")";
+
+                            StringSelection selection = new StringSelection(copyString);
+                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                            clipboard.setContents(selection, null);
+
+                            client.addChatMessage(ChatMessageType.GAMEMESSAGE, "Turael Skipping", "Copied the WorldPoints to your clipboard.", "Turael Skipping");
+                        }
+                    });
+
+            client.getMenu()
+                    .createMenuEntry(-1)
+                    .setOption(DEBUG_MENU_WORLD_POINT_TWO)
+                    .setTarget(menuEntryAdded.getTarget())
+                    .setType(MenuAction.RUNELITE)
+                    .setIdentifier(menuEntryAdded.getIdentifier());
+
+            client.getMenu()
+                    .createMenuEntry(-1)
+                    .setOption(DEBUG_MENU_WORLD_POINT_ONE)
+                    .setTarget(menuEntryAdded.getTarget())
+                    .setType(MenuAction.RUNELITE)
+                    .setIdentifier(menuEntryAdded.getIdentifier());
+        }
+    }
+
+    @Subscribe
+    public void onMenuOptionClicked(MenuOptionClicked event) {
+        if (!event.getMenuOption().equals(DEBUG_MENU_WORLD_POINT_ONE) && !event.getMenuOption().equals(DEBUG_MENU_WORLD_POINT_TWO)) {
+            return;
+        }
+
+        WorldView worldView = client.getLocalPlayer().getWorldView();
+        Tile selectedSceneTile = worldView.getSelectedSceneTile();
+
+        if (selectedSceneTile == null) {
+            return;
+        }
+
+        if (event.getMenuOption().equals(DEBUG_MENU_WORLD_POINT_ONE)) {
+            this.debugWorldPointOne = selectedSceneTile.getWorldLocation();
+
+            client.addChatMessage(ChatMessageType.GAMEMESSAGE, "Turael Skipping", "First WorldPoint has been selected.", "Turael Skipping");
+        } else if (event.getMenuOption().equals(DEBUG_MENU_WORLD_POINT_TWO)) {
+            this.debugWorldPointTwo = selectedSceneTile.getWorldLocation();
+
+            client.addChatMessage(ChatMessageType.GAMEMESSAGE, "Turael Skipping", "Second WorldPoint has been selected.", "Turael Skipping");
+        }
+
+        if (this.debugWorldPointOne != null && debugWorldPointTwo != null) {
+            this.debugAreaOutlineOverlay.setAreas(List.of(
+                    WorldAreaUtils.fromCorners(debugWorldPointOne, debugWorldPointTwo)
+            ));
+        }
+    }
+
+    @Provides
+    TuraelSkippingConfig provideConfig(ConfigManager configManager) {
+        return configManager.getConfig(TuraelSkippingConfig.class);
+    }
+
+    private void startTask(String taskName) {
+        SlayerTask lookupSlayerTask = SlayerTaskRegistry.getSlayerTaskByNpcName(taskName.toLowerCase());
+
+        if (lookupSlayerTask != null) {
+            this.currentSlayerTask = lookupSlayerTask;
+
+            if (config.enableSlayerAreaOutline()) {
+                List<WorldArea> allAreas = new ArrayList<>();
+
+                for (NpcLocation npcLocation : currentSlayerTask.getLocations()) {
+                    allAreas.addAll(npcLocation.getWorldAreas());
+                }
+
+                areaOutlineOverlay.setAreas(allAreas);
+                overlayManager.add(areaOutlineOverlay);
+            } else {
+                areaOutlineOverlay.setAreas(null);
+                overlayManager.remove(areaOutlineOverlay);
+            }
+
+            if (config.enableWorldMapIcon()) {
+                for (WorldPoint worldPoint : currentSlayerTask.getWorldMapLocations()) {
+                    worldMapPointManager.add(new SlayerTaskWorldMapPoint(worldPoint));
+                }
+            }
+
+            // Target NPC's visible to the player in case they are already at the location
+            Player player = client.getLocalPlayer();
+
+            // Player is null when you select a task from the debug menu whe not logged in
+            if (player != null) {
+                WorldView worldView = player.getWorldView();
+
+                for (NPC npc : worldView.npcs()) {
+                    for (int targetNpcId : currentSlayerTask.getNpcIds()) {
+                        if (npc.getId() == targetNpcId) {
+                            targets.add(npc);
+                        }
+                    }
+                }
+
+                npcOverlayService.registerHighlighter(npcHighlighter);
+            }
+        }
+    }
+
+    private void completeTask() {
+        areaOutlineOverlay.setAreas(null);
+        overlayManager.remove(areaOutlineOverlay);
+
+        currentSlayerTask = null;
+        targets.clear();
+
+        npcOverlayService.unregisterHighlighter(npcHighlighter);
+
+        worldMapPointManager.removeIf(SlayerTaskWorldMapPoint.class::isInstance);
+    }
+
+    private String getTaskName(String npcText) {
+        Pattern[] patterns = {SLAYER_ASSIGN_MESSAGE, SLAYER_CURRENT_MESSAGE};
+
+        for (Pattern pattern : patterns) {
+            Matcher matcher = pattern.matcher(npcText);
+
+            if (matcher.find()) {
+                return matcher.group("name");
+            }
+        }
+
+        return null;
+    }
+
+    public Function<NPC, HighlightedNpc> npcHighlighter = (n) -> {
+        if (targets.contains(n) && config.enableNpcHighlight()) {
+            return HighlightedNpc.builder()
+                    .npc(n)
+                    .highlightColor(config.getNpcColour())
+                    .outline(config.getNpcHighlightMode().equals(NpcHighlightMode.Outline))
+                    .hull(config.getNpcHighlightMode().equals(NpcHighlightMode.Hull))
+                    .tile(config.getNpcHighlightMode().equals(NpcHighlightMode.Tile))
+                    .trueTile(config.getNpcHighlightMode().equals(NpcHighlightMode.TrueTile))
+                    .render(npc -> !npc.isDead())
+                    .build();
+        }
+
+        return null;
+    };
 }
