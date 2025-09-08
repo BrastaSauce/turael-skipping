@@ -1,8 +1,20 @@
 # Turael Skipping
-A plugin that provides the best location and information on a Turael task when received. All information was gathered from the OSRS Gear Discord.
 
-## Configuration
-![](https://i.imgur.com/8Em9T70.png)
+A RuneLite plugin that helps you complete Turael and Aya Slayer tasks faster.
 
-* **Display Map Icon:** Displays an icon on the world map where the task is located.<img src="https://i.imgur.com/ehyksJZ.png" width="500">
-* **Display Info:** Displays an infobox containing task information.<img src="https://i.imgur.com/pmuLZxp.png" width="500">
+# Screenshots
+
+<p align="center">
+  <img src="assets/example-1.png" width="45%" alt="Example 1"/>
+  <img src="assets/example-2.png" width="45%" alt="Example 2"/>
+</p>
+
+# Features
+
+- World map icon, showing you the location of the slayer task on the world map
+- Task information box, showing you teleport options as well as potentially important items
+- Automatically hides the information box when you are in the area of your current slayer task
+- NPC highlighting with customizable colour and style
+- Area outlines with configurable colours
+
+![](assets/example-settings.png)
