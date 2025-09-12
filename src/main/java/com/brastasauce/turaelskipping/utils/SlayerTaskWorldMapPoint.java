@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025, wesley-221
+ * Copyright (c) 2022, BrastaSauce
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
