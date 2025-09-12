@@ -45,7 +45,7 @@ public interface TuraelSkippingConfig extends Config {
 
     @ConfigItem(
             position = 0,
-            keyName = "enableInformationBox",
+            keyName = "displayInfo",
             name = "Enable information box",
             description = "Whether to show an information box with information about the current task.",
             section = generalSettings
@@ -67,7 +67,7 @@ public interface TuraelSkippingConfig extends Config {
 
     @ConfigItem(
             position = 2,
-            keyName = "enableWorldMapIcon",
+            keyName = "displayMapIcon",
             name = "Enable world map icon",
             description = "Displays an icon on the world map where the current task is located.",
             section = generalSettings
