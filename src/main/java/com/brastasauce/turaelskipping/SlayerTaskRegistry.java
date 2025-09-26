@@ -89,7 +89,7 @@ public class SlayerTaskRegistry {
                                             new WorldPoint(2721, 5245, 0)
                                     )
                             ), new String[]{"Fairy ring: AJQ"})
-                    ), "Bring a light source")
+                    ), "Bring a light source", new WorldPoint(2715, 5235, 0))
             ),
             Map.entry("cave crawlers", new SlayerTask("Cave Crawlers", List.of(NpcID.SLAYER_CAVE_CRAWLER_1, NpcID.SLAYER_CAVE_CRAWLER_2, NpcID.SLAYER_CAVE_CRAWLER_3, NpcID.SLAYER_CAVE_CRAWLER_4), List.of(
                             new WorldPoint(2789, 3617, 0),
@@ -117,7 +117,7 @@ public class SlayerTaskRegistry {
                                             new WorldPoint(2735, 5239, 0)
                                     )
                             ), new String[]{"Fairy ring: AJQ"})
-                    ), "Bring a light source")
+                    ), "Bring a light source", new WorldPoint(2730, 5234, 0))
             ),
             // My preferred area for this task, keep it for when alternative locations are added
 //            Map.entry("cows", new SlayerTask("Cows", List.of(NpcID.AHOY_UNDEAD_COW), List.of(
@@ -231,7 +231,7 @@ public class SlayerTaskRegistry {
                                             new WorldPoint(3319, 9539, 0)
                                     )
                             ), new String[]{"Desert amulet 4: Kalphite cave"})
-                    ))
+                    ), new WorldPoint(3309, 9526, 0))
             ),
             Map.entry("lizards", new SlayerTask("Lizards", List.of(NpcID.SLAYER_LIZARD_SMALL2_SANDY, NpcID.SLAYER_LIZARD_SMALL1_GREEN), List.of(
                             new WorldPoint(3413, 3035, 0)
@@ -265,7 +265,8 @@ public class SlayerTaskRegistry {
                                             new WorldPoint(2332, 9163, 1)
                                     )
                             ), new String[]{"Gnome Glider: Ookookolly Undri"})
-                    ), "Run south and open the trapdoor, bring a light source")
+                    ), "Run south and open the trapdoor, bring a light source",
+                            new WorldPoint(2715, 2788, 0))
             ),
             Map.entry("rats", new SlayerTask("rats", List.of(NpcID.RAT, NpcID.DUNGEON_RAT), List.of(
                             new WorldPoint(3240, 3458, 0),
