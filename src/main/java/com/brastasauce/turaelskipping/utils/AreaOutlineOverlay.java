@@ -49,7 +49,7 @@ public class AreaOutlineOverlay extends Overlay {
     private final Client client;
     private final TuraelSkippingConfig config;
     private List<WorldArea> areas;
-    private boolean debug;
+    private boolean useAlternativeOutline;
 
     @Inject
     public AreaOutlineOverlay(Client client, TuraelSkippingConfig config) {
@@ -64,8 +64,8 @@ public class AreaOutlineOverlay extends Overlay {
         this.areas = areas;
     }
 
-    public void setDebug(boolean debug) {
-        this.debug = debug;
+    public void setUseAlternativeOutline(boolean useAlternativeOutline) {
+        this.useAlternativeOutline = useAlternativeOutline;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class AreaOutlineOverlay extends Overlay {
             return null;
         }
 
-        if (debug) {
+        if (useAlternativeOutline) {
             graphics.setColor(Color.ORANGE);
             graphics.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
                     new float[]{9}, 0));

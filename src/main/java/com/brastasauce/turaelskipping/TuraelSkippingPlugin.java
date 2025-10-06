@@ -132,7 +132,7 @@ public class TuraelSkippingPlugin extends Plugin {
         overlayManager.add(slayerTaskOverlay);
         overlayManager.add(debugAreaOutlineOverlay);
 
-        debugAreaOutlineOverlay.setDebug(true);
+        debugAreaOutlineOverlay.setUseAlternativeOutline(true);
     }
 
     @Override
