@@ -76,6 +76,18 @@ public interface TuraelSkippingConfig extends Config {
         return true;
     }
 
+    @ConfigItem(
+            position = 1,
+            keyName = "useShortestPath",
+            name = "Use 'Shortest Path' plugin",
+            description = "Draws the shortest path to the assigned task.<br/>" +
+                    "The 'Shortest Path' plugin needs to be installed and enabled for this to work.",
+            section = generalSettings
+    )
+    default boolean useShortestPath() {
+        return false;
+    }
+
     // Highlight settings
     @ConfigSection(
             position = 1,

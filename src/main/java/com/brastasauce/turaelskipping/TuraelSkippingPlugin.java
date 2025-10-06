@@ -55,10 +55,12 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
+import net.runelite.client.events.PluginMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -69,8 +71,10 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -123,6 +127,9 @@ public class TuraelSkippingPlugin extends Plugin {
 
     @Inject
     private SlayerTaskOverlay slayerTaskOverlay;
+
+    @Inject
+    private EventBus eventBus;
 
     @Getter
     private SlayerTask currentSlayerTask;
@@ -363,6 +370,11 @@ public class TuraelSkippingPlugin extends Plugin {
                 }
             }
 
+            if (config.useShortestPath()) {
+                WorldPoint location = currentSlayerTask.getShortestPathWorldPoint();
+                setShortestPath(location);
+            }
+
             // Target NPC's visible to the player in case they are already at the location
             Player player = client.getLocalPlayer();
 
@@ -407,6 +419,16 @@ public class TuraelSkippingPlugin extends Plugin {
         }
 
         return null;
+    }
+
+    private void setShortestPath(WorldPoint target) {
+        if (target == null){
+            return;
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("target", target);
+        eventBus.post(new PluginMessage("shortestpath", "path", data));
     }
 
     public Function<NPC, HighlightedNpc> npcHighlighter = (n) -> {
