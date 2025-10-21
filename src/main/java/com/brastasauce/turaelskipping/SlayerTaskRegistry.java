@@ -281,14 +281,15 @@ public class SlayerTaskRegistry {
                     ))
             ),
             Map.entry("scorpions", new SlayerTask("Scorpions", List.of(NpcID.SCORPION), List.of(
-                            new WorldPoint(3299, 3301, 0)
+                            new WorldPoint(3061, 3376, 0),
+                            new WorldPoint(3049, 9771, 0)
                     ), List.of(
-                            new NpcLocation("Al Kharid Mines", List.of(
+                            new NpcLocation("Mining Guild", List.of(
                                     WorldAreaUtils.fromCorners(
-                                            new WorldPoint(3288, 3273, 0),
-                                            new WorldPoint(3309, 3320, 0)
+                                            new WorldPoint(3061, 9766, 0),
+                                            new WorldPoint(3025, 9799, 0)
                                     )
-                            ), new String[]{"Ring of the elements: Fire Altar (Option 4)", "Ring of dueling: Emir's Arena (Option 1)"})
+                            ), new String[]{"Skill's Necklace: Mining Guild"})
                     ))
             ),
             Map.entry("skeletons", new SlayerTask("Skeletons", List.of(
