@@ -68,15 +68,15 @@ public class SlayerTaskRegistry {
                             ), new String[]{"Fairy ring: BLR", "Quest Cape teleport"})
                     ))
             ),
-            Map.entry("birds", new SlayerTask("Birds", List.of(NpcID.DUCK, NpcID.DUCK_FEMALE), List.of(
-                            new WorldPoint(3178, 3359, 0)
+            Map.entry("birds", new SlayerTask("Birds", List.of(NpcID.DUCK, NpcID.DUCK_FEMALE, NpcID.AHOY_UNDEAD_CHICKEN), List.of(
+                            new WorldPoint(3630, 3530, 0)
                     ), List.of(
-                            new NpcLocation("West of the Champions' Guild", List.of(
+                            new NpcLocation("Alice's Farm, west of the Ectofuntus", List.of(
                                     WorldAreaUtils.fromCorners(
-                                            new WorldPoint(3153, 3337, 0),
-                                            new WorldPoint(3202, 3362, 0)
+                                            new WorldPoint(3608, 3521, 0),
+                                            new WorldPoint(3637, 3534, 0)
                                     )
-                            ), new String[]{"Chronicle teleport"})
+                            ), new String[]{"Ectophial: Empty"})
                     ))
             ),
             Map.entry("cave bugs", new SlayerTask("Cave bugs", List.of(NpcID.SWAMP_CAVE_BUG), List.of(
@@ -119,30 +119,15 @@ public class SlayerTaskRegistry {
                             ), new String[]{"Fairy ring: AJQ"})
                     ), "Bring a light source", new WorldPoint(2730, 5234, 0))
             ),
-            // My preferred area for this task, keep it for when alternative locations are added
-//            Map.entry("cows", new SlayerTask("Cows", List.of(NpcID.AHOY_UNDEAD_COW), List.of(
-//                            new NpcLocation("Alice's Farm, west of the Ectofuntus", List.of(
-//                                    WorldAreaUtils.fromCorners(
-//                                            new WorldPoint(3608, 3521, 0),
-//                                            new WorldPoint(3637, 3534, 0)
-//                                    )
-//                            ), new String[]{"Ectophial: Empty"})
-//                    ))
-//            ),
-            Map.entry("cows", new SlayerTask("Cows", List.of(
-                            NpcID.COW,
-                            NpcID.COW2,
-                            NpcID.COW3,
-                            NpcID.COW2_CALF,
-                            NpcID.COW3_CALF), List.of(
-                            new WorldPoint(3257, 3273, 0)
+            Map.entry("cows", new SlayerTask("Cows", List.of(NpcID.AHOY_UNDEAD_COW), List.of(
+                            new WorldPoint(3630, 3530, 0)
                     ), List.of(
-                            new NpcLocation("Lumbridge", List.of(
+                            new NpcLocation("Alice's Farm, west of the Ectofuntus", List.of(
                                     WorldAreaUtils.fromCorners(
-                                            new WorldPoint(3266, 3254, 0),
-                                            new WorldPoint(3240, 3298, 0)
+                                            new WorldPoint(3608, 3521, 0),
+                                            new WorldPoint(3637, 3534, 0)
                                     )
-                            ), new String[]{"Achievement diary cape: Lumbridge (Option B)", "Lumbridge teleport"})
+                            ), new String[]{"Ectophial: Empty"})
                     ))
             ),
             Map.entry("crawling hands", new SlayerTask("Crawling Hands", List.of(
